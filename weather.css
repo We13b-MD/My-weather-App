@@ -1,0 +1,106 @@
+
+    	body{
+display: flex;
+ justify-content: center ;
+ align-items: center;
+ height: 100vh;
+margin: 0;
+background: #7FFFD4;
+background-image: url("https://images.pexels.com/photos/1035098/pexels-photo-1035098.jpeg?auto=compress&cs=tinysrgb&w=1300");
+   	}
+
+#card{
+background-color: rgb(0, 0, 0);
+color: floralwhite;
+padding: 2em;
+border-radius: 30px;
+max-width: 420px;
+width: 100%;
+font-family: sans-serif;
+}
+
+
+#search{
+	display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+button{
+	margin: 0.5em;
+border-radius: 50px;
+outline: none;
+border: none;
+width: 2.5em;
+height: 2.5em;
+
+}
+
+
+
+#searchbutton{
+height:44px ;
+width: 44px;
+border-radius: 50%;
+background: rgb(60,50,60);
+color: white;
+transition: 0.2s;
+cursor: pointer;
+border-color: snow
+}
+
+
+#searchbutton:hover{
+	background: #000000
+}
+
+
+#myinput{
+	padding: 0.4em 1em;
+	background-color: rgb(10,20,20);
+border-radius: 26px;
+border: none;
+outline: none;
+height: 30px;
+width: calc(100% - 40%);
+font-family: inherit;
+font-size: 90%;
+border-left-width: 20px;
+color: floralwhite;
+}
+
+
+.temp{
+margin: 0;
+margin-bottom: 0.5em;
+
+}
+
+
+.description{
+text-transform: capitalize;
+margin-left: 8px;
+}
+
+.icons{
+	display: flex;
+	align-items: center;
+}
+
+
+.Loading{
+
+visibility: hidden;
+font-family: cursive;
+
+
+}
+
+.loading{
+visibility: hidden;
+max-height: 20px;
+position: relative;
+color: white;
+content: "loading";
+}

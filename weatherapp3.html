@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather app3</title>
+	<link rel = "stylesheet" href = "https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+      integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+      crossorigin="anonymous"
+    />
+
+    <style>
+    	
+
+    	body{
+display: flex;
+ justify-content: center ;
+ align-items: center;
+ height: 100vh;
+margin: 0;
+background: #7FFFD4;
+background-image: url("https://images.pexels.com/photos/1035098/pexels-photo-1035098.jpeg?auto=compress&cs=tinysrgb&w=1300");
+   	}
+
+#card{
+background-color: rgb(0, 0, 0);
+color: floralwhite;
+padding: 2em;
+border-radius: 30px;
+max-width: 420px;
+width: 100%;
+font-family: sans-serif;
+}
+
+
+#search{
+	display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+button{
+	margin: 0.5em;
+border-radius: 50px;
+outline: none;
+border: none;
+width: 2.5em;
+height: 2.5em;
+
+}
+
+
+
+#searchbutton{
+height:44px ;
+width: 44px;
+border-radius: 50%;
+background: rgb(60,50,60);
+color: white;
+transition: 0.2s;
+cursor: pointer;
+border-color: snow
+}
+
+
+#searchbutton:hover{
+	background: #000000
+}
+
+
+#myinput{
+	padding: 0.4em 1em;
+	background-color: rgb(10,20,20);
+border-radius: 26px;
+border: none;
+outline: none;
+height: 30px;
+width: calc(100% - 40%);
+font-family: inherit;
+font-size: 90%;
+border-left-width: 20px;
+color: floralwhite;
+}
+
+
+.temp{
+margin: 0;
+margin-bottom: 0.5em;
+
+}
+
+
+.description{
+text-transform: capitalize;
+margin-left: 8px;
+}
+
+.icons{
+	display: flex;
+	align-items: center;
+}
+
+
+.Loading{
+
+visibility: hidden;
+font-family: cursive;
+
+
+}
+
+.loading{
+visibility: hidden;
+max-height: 20px;
+position: relative;
+color: white;
+content: "loading";
+}
+
+
+/* note when you are styling your search-box make sure you separate your input field from the search-bar */
+
+    </style>
+</head>
+<body>
+	<div id ="card"> <!-- which contains the weather variables (temperature, humidity, search bar and all)-->
+<div id = "search">
+	<input type = text id = "myinput" placeholder =  "search">
+<button id = "searchbutton"><i class = "fa fa-search"></i></button> 
+</div>
+
+<div id = "weather" class = "loading">
+	<div class = "Loading">loading...</div>
+<h2 id = "city">Weather in Denver</h2>
+<h1 id = "temp">51°C</h1>
+<div id = "icons">
+	<img src = "http://openweathermap.org/img/wn/10d@2x.png" alt="" id = "icon" />
+	<div id ="description">Cloudy</div>
+
+</div>
+<div id = "pressure">Pressure</div>
+<div id = "humidity">Humidity</div>
+<div id = "windspeed">Wind Speed</div>  
+</div>
+</div>
+
+   
+
+
+<script>
+
+
+	let weather ={
+
+apikey:"c40413a78ecb2a1519fc25f9b934dd0b",
+Getweather:function(city){
+fetch("https://api.openweathermap.org/data/2.5/weather?q="
+	+city
+	+"&units=metric&appid="
+    +this.apikey
+    )
+.then((response)=>response.json())
+.then((data) => this.Displayweather(data))
+
+	
+},
+// display function is the function that represents the data values
+Displayweather:function(data){
+//Extracting the data from the Api docs 
+const {name} = data;
+const {icon,description}  = data.weather[0];
+const {pressure,temp,humidity} = data.main;
+const {speed} = data.wind
+
+
+// creating variables for the weather components
+const mycity = document.getElementById("city")
+const mytemp = document.getElementById("temp")
+const  mydescription = document.getElementById("description");
+const myicon  = document.getElementById("icon");
+const myhumidity = document.getElementById("humidity")
+const mypressure = document.getElementById("pressure")
+const mywindspeed = document.getElementById("windspeed")
+const myweather = document.getElementById("weather")
+
+
+
+
+mycity.innerText = "Weather in" + " " + name;
+mytemp.innerText = temp + "°C";
+mydescription.innerText = "Description:"
+myicon.src  = "http://openweathermap.org/img/wn/" + icon + ".png";
+myhumidity.innerText = "Humidity:" + humidity + "%"
+mypressure.innerText = "Pressure:" + pressure + "Pa"
+mywindspeed.innerText = "Windspeed:" + speed + "Km/hr"
+myweather.classList.remove("loading")
+document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + name + "')"
+
+},
+// the function enables us to search for the weather for different countries
+search: function(){
+this.Getweather(document.getElementById("myinput").value)
+
+},
+};
+
+const loading = document.querySelector(".Loading")
+	let timer;
+// adding an eventlistener to the search bar
+const mysearchbutton = document.getElementById("searchbutton")
+	mysearchbutton.addEventListener("click", searchevent)
+
+
+	function searchevent(){
+	weather.search();
+	clearInterval(timer)
+	timer = setInterval(()=>{
+		loading.style.visibility = "visible";
+		},500)
+	setTimeout(()=>{
+		loading.innerHTML = " ";
+},10000)
+	
+
+}
+	
+	
+
+const inputevent = document.getElementById("myinput")
+inputevent.addEventListener("keyup",pressenterkey)
+
+
+
+	function pressenterkey(event){
+if(event.key === "Enter"){
+	weather.search()
+
+	clearInterval(timer)
+	timer = setInterval(()=>{
+		loading.style.visibility = "visible";
+		},2000)
+	setTimeout(()=>{
+		loading.innerHTML = " ";
+},10000)
+	}
+
+}
+
+
+
+
+
+
+</script>
+
+<script src = "./script.js" defer></script>
+
+</body>
+</html>
